@@ -1,6 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from 'src/components/HelloWorld'
+
+import Recommend from 'components/recommend/recommend'
+import Singer from 'components/search/search'
+import Rank from 'components/rank/rank'
+import Search from 'components/search/search'
 
 Vue.use(Router)
 
@@ -8,8 +12,23 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      redirect: '/recommend'
+    },
+    {
+      path: '/recommend',
+      componetn: Recommend
+    },
+    {
+      path: '/singer',
+      componetn: Singer
+    },
+    {
+      path: '/rank',
+      componetn: Rank
+    },
+    {
+      path: '/search',
+      componetn: Search
     }
   ]
 })
