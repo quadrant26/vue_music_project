@@ -2,25 +2,26 @@
   <div id="app">
     <m-header></m-header>
     <tab></tab>
-    <router-view></router-view>
+    <router-view/>
   </div>
 </template>
 
 <script>
 import MHeader from 'components/m-header/m-header'
 import Tab from 'components/tab/tab'
+import Recommend from 'components/recommend/recommend'
 
 export default {
   components: {
     MHeader,
-    Tab
+    Tab,
+    Recommend
   }
 }
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
-
-  @import "~common/stylus/variable"
+@import "~common/stylus/variable"
 #app {
   color: $color-theme
 }
