@@ -4,9 +4,9 @@ import router from './router'
 
 import FastClick from 'fastclick'
 
-Vue.config.productionTip = false
-
 import 'common/stylus/index.styl'
+
+Vue.config.productionTip = false
 
 FastClick.attach(document.body)
 
