@@ -1,13 +1,13 @@
 <template>
-    <div class="m-header">
-      <div class="icon"></div>
-      <h1 class="text">Chicken Music</h1>
+  <div class="m-header">
+    <div class="icon"></div>
+    <h1 class="text">Chicken Music</h1>
 
-    </div>
+  </div>
 </template>
 
 <script>
-    export default {}
+export default {}
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">

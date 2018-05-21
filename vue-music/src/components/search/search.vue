@@ -1,11 +1,11 @@
 <template>
-    <div>搜索页面</div>
+  <div>搜索页面</div>
 </template>
 
 <script>
-    export default {}
+export default {}
 </script>
 
-<style>
+<style scoped lang="stylus" rel="stylesheet/stylus">
 
 </style>

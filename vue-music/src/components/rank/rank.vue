@@ -3,11 +3,9 @@
 </template>
 
 <script>
-    export default {
-        name: ""
-    }
+export default {}
 </script>
 
-<style scoped>
+<style scoped lang="stylus" rel="stylesheet/stylus">
 
 </style>
