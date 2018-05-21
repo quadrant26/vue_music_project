@@ -11,7 +11,12 @@
 </template>
 
 <script>
-export default {}
+export default {
+  name: 'Recommend',
+  data: {
+
+  }
+}
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
