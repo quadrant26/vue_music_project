@@ -12,22 +12,22 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: 'recommend'
+      redirect: '/recommend'
     },
     {
-      path: 'recommend',
+      path: '/recommend',
       componetn: Recommend
     },
     {
-      path: 'singer',
+      path: '/singer',
       componetn: Singer
     },
     {
-      path: 'rank',
+      path: '/rank',
       componetn: Rank
     },
     {
-      path: 'search',
+      path: '/search',
       componetn: Search
     }
   ]
