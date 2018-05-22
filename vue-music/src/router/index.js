@@ -16,19 +16,19 @@ export default new Router({
     },
     {
       path: '/recommend',
-      componetn: Recommend
+      component: Recommend
     },
     {
       path: '/singer',
-      componetn: Singer
+      component: Singer
     },
     {
       path: '/rank',
-      componetn: Rank
+      component: Rank
     },
     {
       path: '/search',
-      componetn: Search
+      component: Search
     }
   ]
 })
