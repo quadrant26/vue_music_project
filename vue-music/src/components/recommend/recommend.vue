@@ -13,8 +13,8 @@
 <script>
 export default {
   name: 'Recommend',
-  data: {
-
+  data() {
+    return {}
   }
 }
 </script>
