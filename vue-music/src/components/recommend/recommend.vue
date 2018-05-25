@@ -11,10 +11,17 @@
 </template>
 
 <script>
+import {getRecommend} from "api/recommend"
+import {ERR_OK} from "api/config"
+
 export default {
-  name: 'Recommend',
-  data() {
-    return {}
+  created (){
+    this._getRecommend();
+  },
+  methods: {
+    _getRecommend (){
+      console.log(getRecommend())
+    }
   }
 }
 </script>
