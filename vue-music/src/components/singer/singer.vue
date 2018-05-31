@@ -1,6 +1,6 @@
 <template>
   <div class="singer">
-    <list-view :data="singers" ref="list"></list-view>
+    <list-view :data="singers" :datalist="singerword" ref="list"></list-view>
     <router-view></router-view>
   </div>
 </template>
@@ -17,6 +17,7 @@
   data (){
     return {
       singers: [],
+      singerword: []
     }
   },
   created (){
@@ -26,7 +27,8 @@
     _getSingerList (){
       getSingerList().then( (res) => {
         if (res.code === ERR_OK){
-          this.singers = this._normalLizeSinger(res.singerList.data);
+          this.singers = this._normalLizeSinger(res.singerList.data)[0];
+          this.singerword = this._normalLizeSinger(res.singerList.data)[1];
         }
       })
     },
@@ -64,7 +66,7 @@
         }
       })
 
-      return hot.concat(ret);
+      return [hot, ret];
     }
 
   },
