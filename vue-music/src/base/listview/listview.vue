@@ -1,7 +1,8 @@
 <template>
-    <scroll class="listview" :data="data" ref="listview">
+    <!--<scroll class="listview" :data="data" :datalist="datalist" ref="listview" @scroll="scroll" :listenScroll="listenScroll" :probeType="probeType">-->
+      <scroll class="listview" :data="data" :datalist="datalist" ref="listview">
       <ul>
-        <li v-for="group in data" class="list-group" ref="listGroup">
+        <li v-for="group in datasinger" class="list-group" ref="listGroup">
           <h2 class="list-group-title">{{group.title}}</h2>
           <ul>
             <li v-for="item in group.items" class="list-group-item">
@@ -13,8 +14,12 @@
       </ul>
       <div class="list-shortcut" @touchstart.stop.prevent="onShortcutTouchStart" @touchmove.stop.prevent="onShortcutTouchMove" @touchend.stop>
         <ul>
-          <li v-for="(item, index) in shortcutList" :data-index="index" class="item">{{item}}</li>
+          <li v-for="(item, index) in shortcutList" :data-index="item.title" class="item"
+              :class="{'current':currentIndex==index}">{{item.name}}</li>
         </ul>
+      </div>
+      <div class="list-fixed" v-show="fixedTitle">
+        <h1 class="fixed-title">{{fixedTitle}}</h1>
       </div>
     </scroll>
 </template>
@@ -22,49 +27,182 @@
 <script>
   import Scroll from 'base/scroll/scroll'
   import { getData } from 'common/js/dom.js'
+  import { getSingerList } from "api/singer";
+  import { ERR_OK } from "api/config";
 
   const ANCHOR_HEIGHT = 18
+  const HOT_SINGER_LEN = 20
+  const HOT_NAME = '热门'
 
   export default {
+    data (){
+      return {
+        datasinger: [],
+        currentIndex: 0,
+        scrollY: -1
+      }
+    },
     props: {
       data: {
+        type: Array,
+        default: []
+      },
+      datalist: {
         type: Array,
         default: []
       }
     },
     created (){
       this.touch = {}
+      this.listenScroll = true
+      this.listHeight = []
+      this.probeType = 3
+    },
+    mounted (){
+      this.datasinger = [].concat(this.data)
     },
     computed: {
       shortcutList (){
-        return this.data.map( (group, index) => {
-          if (index > 0){
-            return group.name.substr(0, 1)
-          }
+        return this.datalist.map( (group, index) => {
+          return group
         })
+      },
+      fixedTitle (){
+        // return this.data[this.currentIndex] ? this.data[this.currentIndex].title : ''
+        return this.datasinger[0] ? this.datasinger[0].title : ''
       }
     },
     methods: {
       onShortcutTouchStart (e){
-
+        /*
         let firstTouch = e.touches[0]
         let anchorIndex = getData(e.target, 'index');
         this.touch.y1 = firstTouch.pageY
         this.touch.anchorIndex = anchorIndex
         this._scrollTo(anchorIndex)
-        // this.$refs.listview.scrollTopElement( this.$refs.listGroup[index], 0)
+        this.$refs.listview.scrollTopElement( this.$refs.listGroup[index], 0)
         console.log(anchorIndex);
+        */
+
+        let anchorIndex = getData(e.target, 'index')
+        this._getSingerList(parseInt(anchorIndex))
+        if (anchorIndex == -100) {
+          this.currentIndex = 0
+        }else{
+          this.currentIndex = anchorIndex;
+        }
       },
       onShortcutTouchMove (e){
+        /*
         let firstTouch = e.touches[0]
         this.touch.y2 = firstTouch.pageY
         let delta = (this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT | 0
         let anchorIndex = parseInt(this.touch.anchorIndex) + delta
 
         this._scrollTo(anchorIndex)
+        */
+      },
+      scroll (pos){
+        this.scrollY = pos.y
+
       },
       _scrollTo (index){
+        if ( !index && index !== 0){
+          return
+        }
+
+        if (index < 0){
+          index = 0
+        }else if (index > this.listHeight.length - 2){
+          index = this.listHeight.length - 2
+        }
+
+        this.scrollY = -this.listHeight[index]
         this.$refs.listview.scrollTopElement( this.$refs.listGroup[index], 0)
+      },
+      _calculateHeight (){
+        this.listHeight = [];
+        const list = this.$refs.listGroup
+        let height = 0
+        this.listHeight.push(height)
+        for (let i = 0; i < list.length; i++){
+          let item = list[i]
+          height += item.clientHeight
+          this.listHeight.push(height)
+        }
+      },
+      _getSingerList (index){
+        getSingerList(index).then( (res) => {
+          if (res.code === ERR_OK){
+            this.datasinger = this._normalLizeSinger(res.singerList.data);
+          }
+        })
+      },
+      _normalLizeSinger (data) {
+
+        const HOT_NAME = data.index;
+        if (HOT_NAME == -100){
+          var NAME = "热门"
+        }else{
+          var NAME = String.fromCharCode(parseInt(HOT_NAME+64))
+        }
+
+        let map = {
+          hot: {
+            title: NAME,
+            items: []
+          }
+        }
+
+        const list = data.singerlist
+
+        list.forEach( (item, index) => {
+          if ( HOT_SINGER_LEN < index ){
+            map.hot.items.push({
+              id: item.singer_id,
+              name: item.singer_name,
+              avater: item.singer_pic
+            })
+          }
+        })
+
+        const hot = [];
+        hot.push(map.hot)
+        return hot;
+      }
+    },
+    watch: {
+      data (){
+        this.datasinger = this.data;
+        setTimeout( ()=>{
+          this._calculateHeight()
+        }, 20)
+      },
+      scrollY (newY) {
+        const listHeight = this.listHeight
+        // 滚动到顶部 newY > 0
+        for (let i = 0; i < listHeight.length - 1; i++){
+          let height1 = listHeight[i]
+          let height2 = listHeight[i+1]
+          if (!height2 || (-newY >= height1 && -newY < height2)){
+            this.currentIndex = i
+            this.diff = height2 + newY
+          }
+        }
+        // 当滚动到底部，且 -newY 大于最后一个元素的上限
+        this.currentIndex = 0
+      },
+      currentIndex (index){
+        console.log(index)
+        this.currentIndex = index
+      },
+      diff(newVal) {
+        let fixedTop = (newVal > 0 && newVal < TITLE_HEIGHT) ? newVal - TITLE_HEIGHT : 0
+        if (this.fixedTop === fixedTop) {
+          return
+        }
+        this.fixedTop = fixedTop
+        this.$refs.fixed.style.transform = `translate3d(0,${fixedTop}px,0)`
       }
     },
     components: {
