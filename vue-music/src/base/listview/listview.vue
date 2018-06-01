@@ -5,7 +5,7 @@
         <li v-for="group in datasinger" class="list-group" ref="listGroup">
           <h2 class="list-group-title">{{group.title}}</h2>
           <ul>
-            <li v-for="item in group.items" class="list-group-item">
+            <li @click="selectItem(item)" v-for="item in group.items" class="list-group-item">
               <img class="avatar" :src="item.avater" alt="">
               <span class="name">{{item.name}}</span>
             </li>
@@ -77,6 +77,9 @@
       }
     },
     methods: {
+      selectItem(item) {
+        this.$emit('select', item);
+      },
       onShortcutTouchStart (e){
         /*
         let firstTouch = e.touches[0]
