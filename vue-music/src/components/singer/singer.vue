@@ -1,6 +1,6 @@
 <template>
   <div class="singer">
-    <list-view :data="singers" :datalist="singerword" ref="list"></list-view>
+    <list-view @select="selectSinger" :data="singers" :datalist="singerword" ref="list"></list-view>
     <router-view></router-view>
   </div>
 </template>
@@ -24,6 +24,12 @@
     this._getSingerList()
   },
   methods: {
+    selectSinger (singer){
+      console.log(singer)
+      this.$router.push({
+        path: `/singer/${singer.id}`
+      })
+    },
     _getSingerList (){
       getSingerList().then( (res) => {
         if (res.code === ERR_OK){
@@ -46,7 +52,7 @@
       list.forEach( (item, index) => {
         if ( HOT_SINGER_LEN < index ){
           map.hot.items.push({
-            id: item.singer_id,
+            id: item.singer_mid,
             name: item.singer_name,
             avater: item.singer_pic
           })
