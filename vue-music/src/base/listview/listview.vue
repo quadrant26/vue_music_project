@@ -21,6 +21,9 @@
       <div class="list-fixed" v-show="fixedTitle">
         <h1 class="fixed-title">{{fixedTitle}}</h1>
       </div>
+      <div v-show="!datasinger.length" class="loading-container">
+        <loading></loading>
+      </div>
     </scroll>
 </template>
 
@@ -29,6 +32,7 @@
   import { getData } from 'common/js/dom.js'
   import { getSingerList } from "api/singer";
   import { ERR_OK } from "api/config";
+  import Loading from 'base/loading/loading'
 
   const ANCHOR_HEIGHT = 18
   const HOT_SINGER_LEN = 20
@@ -206,7 +210,8 @@
       }
     },
     components: {
-      Scroll
+      Scroll,
+      Loading
     }
   }
 </script>
