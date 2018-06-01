@@ -8,7 +8,9 @@
 <script>
   import { getSingerList } from "api/singer";
   import { ERR_OK } from "api/config";
+  import Singer from 'common/js/singer'
   import ListView from 'base/listview/listview'
+  import {mapMutations } from 'vuex'
 
   const HOT_NAME = '热门'
   const HOT_SINGER_LEN = 20
@@ -25,10 +27,11 @@
   },
   methods: {
     selectSinger (singer){
-      console.log(singer)
+
       this.$router.push({
         path: `/singer/${singer.id}`
       })
+      this.setSinger(singer)
     },
     _getSingerList (){
       getSingerList().then( (res) => {
@@ -51,11 +54,15 @@
 
       list.forEach( (item, index) => {
         if ( HOT_SINGER_LEN < index ){
-          map.hot.items.push({
+          /*map.hot.items.push({
             id: item.singer_mid,
             name: item.singer_name,
             avater: item.singer_pic
-          })
+          })*/
+          map.hot.items.push(new Singer({
+            id: item.singer_mid,
+            name: item.singer_name
+          }))
         }
       })
 
@@ -73,8 +80,10 @@
       })
 
       return [hot, ret];
-    }
-
+    },
+    ...mapMutations({
+      setSinger: 'SET_SINGER'
+    })
   },
   components: {
     ListView
