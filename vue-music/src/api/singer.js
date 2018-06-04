@@ -26,8 +26,7 @@ export function getSingerDetail (singermid){
 
   const url = 'https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg';
 
-  const data = Object.assign({}, {
-    g_tk: 199116970,
+  const data = Object.assign({}, commonParams, {
     hostUin: 0,
     platform: 'yqq',
     needNewCode: 0,
@@ -45,25 +44,18 @@ export function getSongKey (songmid, strMediaMid){
 
   const url = 'https://c.y.qq.com/base/fcgi-bin/fcg_music_express_mobile3.fcg';
 
-  const data = Object.assign({}, {
-    loginUin:0,
-    hostUin:0,
-    platform:'yqq',
-    needNewCode:0,
-    cid:205361747,
-    uin:0,
+  const data = Object.assign({}, commonParams, {
+    loginUin: 0,
+    hostUin: 0,
+    platform: 'yqq',
+    needNewCode: 0,
+    cid: 205361747,
+    uin: 0,
     songmid: songmid,
     filename: `C400${strMediaMid}.m4a`,
-    guid:6044510397,
+    guid: 6044510397,
     format: 'json'
   })
 
-  console.log(data);
-  let s = ''
-  for ( var k in data){
-    s += `&${k}=${data[k]}`
-  }
-  console.log(s);
-
-  // return jsonp(url,  data,  options)
+  return jsonp(url,  data,  options)
 }

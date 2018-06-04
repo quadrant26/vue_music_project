@@ -35,18 +35,15 @@
         getSingerDetail(this.singer.id).then( (res) => {
           if (res.code == ERR_OK){
             this.songs = this._normalLizeSongs(res.data.list)
-            // console.log(this.songs)
+            console.log(this.songs)
           }
         })
       },
       _normalLizeSongs (list){
         let ret = []
         list.forEach( (item, index) => {
-          if (index > 0)return;
           let { musicData } = item
           if ( musicData.songid && musicData.albummid ){
-
-            console.log( createSong(musicData) )
             ret.push(createSong(musicData))
           }
         })
