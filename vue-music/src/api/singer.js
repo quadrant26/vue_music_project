@@ -43,6 +43,7 @@ export function getSingerDetail (singermid){
 export function getSongKey (songmid, strMediaMid){
 
   const url = 'https://c.y.qq.com/base/fcgi-bin/fcg_music_express_mobile3.fcg';
+  const a = "MusicJsonCallback" + (Math.random() + "").replace("0.", "")
 
   const data = Object.assign({}, commonParams, {
     loginUin: 0,
@@ -54,8 +55,14 @@ export function getSongKey (songmid, strMediaMid){
     songmid: songmid,
     filename: `C400${strMediaMid}.m4a`,
     guid: 6044510397,
-    format: 'json'
+    format: 'json',
+    callback: a
   })
 
-  return jsonp(url,  data,  options)
+  const option = {
+    param: 'jsonpCallback',
+    name: a
+  }
+
+  return jsonp(url,  data,  option)
 }

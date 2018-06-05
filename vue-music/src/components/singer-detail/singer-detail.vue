@@ -7,7 +7,7 @@
 
 <script>
   import {mapGetters} from 'vuex'
-  import { getSingerDetail } from 'api/singer'
+  import { getSingerDetail, getSongKey } from 'api/singer'
   import { ERR_OK} from "api/config";
   import { createSong } from 'common/js/song'
 
@@ -23,7 +23,9 @@
       ])
     },
     created (){
-      this._getSingerDetail();
+      this._getSingerDetail()
+    },
+    mounted (){
     },
     methods: {
       _getSingerDetail (){
@@ -34,20 +36,58 @@
         }
         getSingerDetail(this.singer.id).then( (res) => {
           if (res.code == ERR_OK){
+
             this.songs = this._normalLizeSongs(res.data.list)
             console.log(this.songs)
+            // this._normalLizeSongs(res.data.list).then( (res) => {
+            //   this.songs = res
+            // })
           }
         })
       },
       _normalLizeSongs (list){
+        let _this = this;
         let ret = []
         list.forEach( (item, index) => {
+
           let { musicData } = item
           if ( musicData.songid && musicData.albummid ){
+
+            /*_this._normalLizeKey (musicData).then( vkey => {
+              ret.push(createSong(musicData, vkey))
+              return resolve(ret);
+            })*/
             ret.push(createSong(musicData))
           }
         })
-        return ret
+        return ret;
+        /*return new Promise(function (resolve, reject) {
+          list.forEach( (item, index) => {
+
+          let { musicData } = item
+            if ( musicData.songid && musicData.albummid ){
+
+              _this._normalLizeKey (musicData).then( vkey => {
+                ret.push(createSong(musicData, vkey))
+                return resolve(ret);
+              })
+              // ret.push(createSong(musicData))
+            }
+          })
+        })*/
+      },
+      _normalLizeKey (musicData){
+        var vkey = ''
+        const {songmid, strMediaMid} = musicData
+
+        return new Promise(function (resolve, reject ){
+          getSongKey(songmid, strMediaMid).then( res => {
+            if ( res.code == ERR_OK ){
+              vkey = res.data.items[0].vkey;
+              resolve(vkey)
+            }
+          })
+        })
       }
     }
   }
