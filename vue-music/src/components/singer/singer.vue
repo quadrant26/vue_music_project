@@ -53,7 +53,7 @@
       const keylist = data.tags.index;
 
       list.forEach( (item, index) => {
-        if ( HOT_SINGER_LEN < index ){
+        if ( HOT_SINGER_LEN > index ){
           /*map.hot.items.push({
             id: item.singer_mid,
             name: item.singer_name,
