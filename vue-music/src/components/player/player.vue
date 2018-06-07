@@ -50,14 +50,16 @@
             <p class="desc" v-html="currentSong.singer"></p>
           </div>
           <div class="control">
-            <i @click.stop="togglePlaying" :class="miniIcon"></i>
+            <progress-circle :radius="radius" :percent="percent">
+              <i @click.stop="togglePlaying" class="icon-mini" :class="miniIcon"></i>
+            </progress-circle>
           </div>
           <div class="control">
             <i class="icon-playlist"></i>
           </div>
         </div>
       </transition>
-      <audio ref="audio" :src="currentSong.url" @canplay="ready" @error="error"
+      <audio ref="audio" :src="currentSong.url" @play="ready" @error="error"
         @timeupdate="updatetime"
       ></audio>
     </div>
@@ -69,6 +71,7 @@
   import { prefixStyle } from "common/js/dom";
   import {currentIndex} from "../../store/getters";
   import ProgressBar from 'base/progress-bar/progress-bar'
+  import ProgressCircle from 'base/progress-circle/progress-circle'
 
   const transform = prefixStyle('transform')
 
@@ -76,7 +79,8 @@
     data (){
       return {
         songReady: false,
-        currentTime: 0
+        currentTime: 0,
+        radius: 32
       }
     },
     computed: {
@@ -249,7 +253,8 @@
       }
     },
     components: {
-      ProgressBar
+      ProgressBar,
+      ProgressCircle
     }
   }
 </script>
