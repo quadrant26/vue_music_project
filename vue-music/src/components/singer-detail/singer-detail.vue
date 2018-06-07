@@ -46,31 +46,8 @@
 
         getSingerDetail(this.singer.id).then( (res) => {
           if (res.code == ERR_OK){
-
-            let key_list = []
-            let list_data = res.data.list;
-
-            list_data.forEach( (item, index) => {
-              let { musicData } = item
-              let {songmid, strMediaMid} = musicData
-
-              getSongKey(songmid, strMediaMid).then( (resp) => {
-
-                if (resp.code === ERR_OK){
-                  let key = resp.data.items[0].vkey
-
-                  if ( musicData.songid && musicData.albummid ){
-                    key_list.push(createSong(musicData, key))
-                    this.songs = key_list
-                    // console.log(this.songs)
-                  }
-                }
-
-              })
-
-            })
-
-            // this.songs = this._normalLizeSongs(res.data.list)
+            this.songs = _this._normalLizeSongs(res.data.list)
+            console.log(this.songs)
           }
         })
       },
@@ -79,11 +56,18 @@
         let ret = []
         list.forEach( (item, index) => {
 
-          if (index > 0 )return
           let { musicData } = item
-          if ( musicData.songid && musicData.albummid ){
-            ret.push(createSong(musicData))
-          }
+          let { songmid} = musicData
+          getSongKey(songmid).then( (resp) => {
+
+            if (resp.code === ERR_OK){
+              let key = resp.data.items[0].vkey
+
+              if ( musicData.songid && musicData.albummid ){
+                ret.push(createSong(musicData, key))
+              }
+            }
+          })
         })
         return ret;
       }
