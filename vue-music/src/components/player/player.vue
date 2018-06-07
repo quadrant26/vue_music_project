@@ -27,9 +27,9 @@
           <div class="bottom">
             <div class="operators">
               <div class="icon i-left"><i class="icon-sequence"></i></div>
-              <div class="icon i-left"><i @click="prev" class="icon-prev"></i></div>
-              <div class="icon i-center"><i @click="togglePlaying" :class="playIcon"></i></div>
-              <div class="icon i-right"><i @click="next" class="icon-next"></i></div>
+              <div class="icon i-left" :class="disableCls"><i @click="prev" class="icon-prev"></i></div>
+              <div class="icon i-center" :class="disableCls"><i @click="togglePlaying" :class="playIcon"></i></div>
+              <div class="icon i-right" :class="disableCls"><i @click="next" class="icon-next"></i></div>
               <div class="icon i-right"><i class="icon-not-favorite"></i></div>
             </div>
           </div>
@@ -50,7 +50,7 @@
           </div>
         </div>
       </transition>
-      <audio ref="audio" :src="currentSong.url" ></audio>
+      <audio ref="audio" :src="currentSong.url" @canplay="ready" @error="error"></audio>
     </div>
 </template>
 
@@ -63,6 +63,11 @@
   const transform = prefixStyle('transform')
 
   export default {
+    data (){
+      return {
+        songReady: false
+      }
+    },
     computed: {
       cdCls () {
         return this.playing ? 'play' : 'play pause'
@@ -72,6 +77,9 @@
       },
       miniIcon (){
         return this.playing ? 'icon-pause-mini' : 'icon-play-mini'
+      },
+      disableCls (){
+        return this.songReady ? '': 'disable'
       },
       ...mapGetters([
         'fullScreen',
@@ -133,6 +141,27 @@
         this.setPlayState(!this.playing)
       },
       prev (){
+        if (!this.songReady){
+          return
+        }
+
+        let index = this.currentIndex - 1
+        if (index === -1){
+          index = this.playList.length - 1
+        }
+
+        this.setCurrentIndex(index)
+        if ( !this.playing) {
+          this.togglePlaying()
+        }
+
+        this.songReady = false
+      },
+      next (){
+        if (!this.songReady){
+          return
+        }
+
         let index = this.currentIndex + 1
         if (index === this.playList.length){
           index = 0
@@ -141,16 +170,14 @@
         if ( !this.playing) {
           this.togglePlaying()
         }
+
+        this.songReady = false
       },
-      next (){
-        let index = this.currentIndex - 1
-        if (index === -1){
-          index = this.playList.length - 1
-        }
-        this.setCurrentIndex(index)
-        if ( !this.playing) {
-          this.togglePlaying()
-        }
+      ready (){
+        this.songReady = true
+      },
+      error (){
+        this.songReady = true
       },
       _getPosAndScale (){
         const targetWidth = 40
