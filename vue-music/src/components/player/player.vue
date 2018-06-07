@@ -27,9 +27,9 @@
           <div class="bottom">
             <div class="operators">
               <div class="icon i-left"><i class="icon-sequence"></i></div>
-              <div class="icon i-left"><i class="icon-prev"></i></div>
+              <div class="icon i-left"><i @click="prev" class="icon-prev"></i></div>
               <div class="icon i-center"><i @click="togglePlaying" :class="playIcon"></i></div>
-              <div class="icon i-right"><i class="icon-next"></i></div>
+              <div class="icon i-right"><i @click="next" class="icon-next"></i></div>
               <div class="icon i-right"><i class="icon-not-favorite"></i></div>
             </div>
           </div>
@@ -50,7 +50,7 @@
           </div>
         </div>
       </transition>
-      <audio ref="audio" :src="currentSong.url"></audio>
+      <audio ref="audio" :src="currentSong.url" ></audio>
     </div>
 </template>
 
@@ -58,6 +58,7 @@
   import {mapGetters, mapMutations} from 'vuex'
   import animations from 'create-keyframe-animation'
   import { prefixStyle } from "common/js/dom";
+  import {currentIndex} from "../../store/getters";
 
   const transform = prefixStyle('transform')
 
@@ -76,7 +77,8 @@
         'fullScreen',
         'playList',
         'currentSong',
-        'playing'
+        'playing',
+        'currentIndex'
       ])
     },
     methods: {
@@ -130,6 +132,26 @@
       togglePlaying (){
         this.setPlayState(!this.playing)
       },
+      prev (){
+        let index = this.currentIndex + 1
+        if (index === this.playList.length){
+          index = 0
+        }
+        this.setCurrentIndex(index)
+        if ( !this.playing) {
+          this.togglePlaying()
+        }
+      },
+      next (){
+        let index = this.currentIndex - 1
+        if (index === -1){
+          index = this.playList.length - 1
+        }
+        this.setCurrentIndex(index)
+        if ( !this.playing) {
+          this.togglePlaying()
+        }
+      },
       _getPosAndScale (){
         const targetWidth = 40
         const paddingLeft = 40
@@ -145,7 +167,8 @@
       },
       ...mapMutations({
         setFullScreen: 'SET_FULL_SCREEN',
-        setPlayState: 'SET_PLAYING_STATE'
+        setPlayState: 'SET_PLAYING_STATE',
+        setCurrentIndex: 'SET_CURRENT_INDEX'
       })
     },
     watch: {
