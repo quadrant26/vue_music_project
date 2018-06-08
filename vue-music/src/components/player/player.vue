@@ -11,7 +11,7 @@
             <img :src="currentSong.image" width="100%" height="100%" alt="">
           </div>
           <div class="top">
-            <div class="back"><i class="icon-back" @click="back"></i></div>
+            <div class="back" @click="back"><i class="icon-back"></i></div>
             <h1 class="title" v-html="currentSong.name"></h1>
             <h2 class="subtitle" v-html="currentSong.singer"></h2>
           </div>
@@ -22,9 +22,9 @@
                   <img :src="currentSong.image" alt="" class="image">
                 </div>
               </div>
-            </div>
-            <div class="playing-lyric-wrapper">
-              <div class="playing-lyric">{{playingLyric}}</div>
+              <div class="playing-lyric-wrapper">
+                <div class="playing-lyric">{{playingLyric}}</div>
+              </div>
             </div>
             <scroll class="middle-r" ref="lyricList" :data="currentLyric && currentLyric.lines">
               <div class="lyric-wrapper">
@@ -214,6 +214,7 @@
 
         if ( this.playList.length === 1){
           this.loop()
+          return
         } else {
           let index = this.currentIndex + 1
           if (index === this.playList.length){
@@ -232,6 +233,7 @@
         }
         if ( this.playList.length === 1) {
           this.loop()
+          return
         } else {
           let index = this.currentIndex - 1
           if (index === -1){
@@ -307,7 +309,7 @@
         this.currentLineNum = lineNum
         if ( lineNum > 5){
           let lineEl = this.$refs.lyricLine[lineNum-5]
-          this.$refs.lyricLine.scrollToElement(lineEl, 1000)
+          this.$refs.lyricList.scrollToElement(lineEl, 1000)
         } else{
           this.$refs.lyricList.scrollTo(0, 0, 1000)
         }
