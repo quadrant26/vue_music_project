@@ -47,7 +47,6 @@
         getSingerDetail(this.singer.id).then( (res) => {
           if (res.code == ERR_OK){
             this.songs = _this._normalLizeSongs(res.data.list)
-            console.log(this.songs)
           }
         })
       },
@@ -58,7 +57,7 @@
 
           let { musicData } = item
           let { songmid} = musicData
-          getSongKey(songmid).then( (resp) => {
+          /*getSongKey(songmid).then( (resp) => {
 
             if (resp.code === ERR_OK){
               let key = resp.data.items[0].vkey
@@ -67,7 +66,10 @@
                 ret.push(createSong(musicData, key))
               }
             }
-          })
+          })*/
+          if ( musicData.songid && musicData.albummid ){
+            ret.push(createSong(musicData))
+          }
         })
         return ret;
       }
