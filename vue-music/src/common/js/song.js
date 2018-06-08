@@ -2,6 +2,7 @@ import jsonp from './jsonp'
 import { commonParams, options, ERR_OK} from "api/config";
 import { getSongKey } from 'api/singer'
 import { getLyric, getLyricJsonp } from 'api/song'
+import { Base64 } from 'js-base64'
 
 export default class Song {
   constructor ({id, mid, singer, name, album, duration, image, url, singer_id}) {
@@ -18,13 +19,20 @@ export default class Song {
   }
 
   getLyric() {
-    getLyric(this.mid, this.singer_id).then( (res) => {
-      console.log(res)
-      if ( res.retcode === ERR_OK ){
-        this.getLyric = res.lyric
-        console.log( this.getLyric )
-      }
+    if ( this.lyric){
+      return Promise.resolve(this.lyric)
+    }
+    return new Promise( (resolve, reject) => {
+      getLyric(this.mid, this.singer_id).then( (res) => {
+        if ( res.retcode === ERR_OK ){
+          this.lyric = Base64.decode(res.lyric)
+          resolve(this.lyric)
+        }else{
+          reject('no lyric')
+        }
+      })
     })
+
   }
 }
 
