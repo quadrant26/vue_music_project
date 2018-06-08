@@ -87,7 +87,7 @@
         this.touch.y1 = firstTouch.pageY
         this.touch.anchorIndex = anchorIndex
         this._scrollTo(anchorIndex)
-        this.$refs.listview.scrollTopElement( this.$refs.listGroup[index], 0)
+        this.$refs.listview.scrollToElement( this.$refs.listGroup[index], 0)
         console.log(anchorIndex);
         */
 
@@ -125,7 +125,7 @@
         }
 
         this.scrollY = -this.listHeight[index]
-        this.$refs.listview.scrollTopElement( this.$refs.listGroup[index], 0)
+        this.$refs.listview.scrollToElement( this.$refs.listGroup[index], 0)
       },
       _calculateHeight (){
         this.listHeight = [];
