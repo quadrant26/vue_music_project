@@ -1,4 +1,5 @@
 import * as types from './mutation-types'
+import state from "./state";
 
 const mutations = {
   [types.SET_SINGER](state, singer) {
@@ -21,6 +22,9 @@ const mutations = {
   },
   [types.SET_CURRENT_INDEX](state, index) {
     state.currentIndex = index
+  },
+  [types.SET_DISC](state, disc){
+    state.disc =  disc
   }
 }
 
