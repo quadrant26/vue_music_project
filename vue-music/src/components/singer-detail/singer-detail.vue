@@ -53,6 +53,8 @@
       _normalLizeSongs (list){
         let _this = this;
         let ret = []
+
+
         list.forEach( (item, index) => {
 
           let { musicData } = item
