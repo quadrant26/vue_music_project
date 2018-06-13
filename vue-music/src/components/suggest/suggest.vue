@@ -41,7 +41,7 @@
       search (){
         search(this.query, this.page, this.showSinger).then( (res) => {
           if ( res.code === ERR_OK ){
-            console.log(res)
+            // console.log(res)
             this.result = this._getResult(res.data)
           }
 
