@@ -23,15 +23,15 @@
         clear (){
           this.query = ''
         },
-        created (){
-          this.$watch('query', (newQuery) => {
-            this.$emit('query', newQuery)
-          })
-        },
         setQuery (query){
           this.query = query
         }
-      }
+      },
+      created (){
+        this.$watch('query', (newQuery) => {
+          this.$emit('query', newQuery)
+        })
+      },
     }
 </script>
 
