@@ -16,11 +16,11 @@
         <div class="search-history" v-show="searchHistory.length">
           <h1 class="title">
             <span class="text">搜索历史</span>
-            <span class="clear">
-            <i class="icon-clear"></i>
-          </span>
+            <span class="clear" @click="clearSearchHistory">
+              <i class="icon-clear"></i>
+            </span>
           </h1>
-          <search-list :searches="searchHistory"></search-list>
+          <search-list @select="addQuery" @delete="deleteSearchHistory" :searches="searchHistory"></search-list>
         </div>
       </div>
     </div>
@@ -77,7 +77,9 @@
         })
       },
       ...mapActions([
-        'saveSearchHistory'
+        'saveSearchHistory',
+        'deleteSearchHistory',
+        'clearSearchHistory'
       ])
     },
     components: {
