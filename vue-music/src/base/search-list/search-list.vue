@@ -1,8 +1,8 @@
 <template>
-  <div class="search-list">
+  <div class="search-list" v-show="searches.length">
     <ul>
-      <li class="search-item">
-        <span class="text"></span>
+      <li class="search-item" v-for="item in searches">
+        <span class="text">{{item}}</span>
         <span class="icon">
           <i class="icon-delete"></i>
         </span>
@@ -12,7 +12,14 @@
 </template>
 
 <script>
-    export default {}
+  export default {
+    props: {
+      searches: {
+        type: Boolean,
+        default: []
+      }
+    }
+  }
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
