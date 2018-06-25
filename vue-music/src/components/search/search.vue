@@ -3,7 +3,7 @@
     <div class="search-box-wrapper">
       <search-box ref="searchbox" @query="onQueryChange"></search-box>
     </div>
-    <div class="shortcut-wrapper" ref="shortcut-wrapper" v-show="!query">
+    <div class="shortcut-wrapper" ref="shortcutWrapper" v-show="!query">
       <scroll class="shortcut" :data="shortcutList" ref="shortcut">
         <div>
           <div class="hot-key">
@@ -26,7 +26,7 @@
         </div>
       </scroll>
     </div>
-    <div class="search-result" ref="search-result" v-show="query">
+    <div class="search-result" ref="searchResult" v-show="query">
       <suggest ref="suggest" @select="saveSearch" @listScroll="blurInput" :query="query"></suggest>
     </div>
     <confirm text="是否清空所有搜索历史记录" confirmBtnText="清空" ref="confirm" @confirm="clearSearchHistory"></confirm>
@@ -69,12 +69,13 @@
     },
     methods: {
       handlePlaylist (playlist){
-        const bottom = playlist.length > 0 ? '60px' : 0
-        this.$refs.shortcutWrapper.style.bottom = bottom
-        this.$refs.shortcut.refresh()
+        const bottom = playlist.length > 0 ? '60px' : ''
 
         this.$refs.searchResult.style.bottom = bottom
         this.$refs.suggest.refresh()
+
+        this.$refs.shortcutWrapper.style.bottom = bottom
+        this.$refs.shortcut.refresh()
       },
       addQuery (query){
         this.$refs.searchbox.setQuery(query)
