@@ -1,6 +1,8 @@
 <template>
   <scroll class="suggest" :data="result" :pullup="pullup"
           @scrollToEnd="searchMore"
+          :beforeScroll="beforeScroll"
+          @beforeScroll="listScroll"
           ref="suggest"
   >
     <ul class="suggest-list">
@@ -50,6 +52,7 @@
         page: 1,
         result: [],
         pullup: true,
+        beforeScroll: true,
         hasMore: true
       }
     },
@@ -89,6 +92,9 @@
         } else {
           this.insertSong(item)
         }
+      },
+      listScroll (){
+        this.$emit('listScroll');
       },
       _checkMore ( data) {
         const song = data.song
