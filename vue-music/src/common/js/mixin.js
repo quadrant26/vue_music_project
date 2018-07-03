@@ -67,3 +67,35 @@ export const playMixin = {
     })
   }
 }
+
+
+export const searchMixin = {
+  data (){
+    return {
+      query: ''
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'searchHistory'
+    ])
+  },
+  methods: {
+    blurInput (){
+      this.$refs.searchbox.blur()
+    },
+    saveSearch (){
+      this.saveSearchHistory(this.query)
+    },
+    onQueryChange (query){
+      this.query = query
+    },
+    addQuery (query){
+      this.$refs.searchbox.setQuery(query)
+    },
+    ...mapActions([
+      'saveSearchHistory',
+      'deleteSearchHistory'
+    ])
+  }
+}
