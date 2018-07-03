@@ -39,7 +39,7 @@ export default class Song {
 export function createSong (musicData, key){
 
   if (!key){
-    var key = '5F4E8BE2FECD4730567CA73C8DC2F17333BA26F851BA12EAA60BC2D8E0AA2938847056562928AC4082BBBC6C9FEC861D4F0EB8D4FCE8E6A1'
+    var key = 'C535D647E993B67492E60B7ED97862C0339DE1E134D742C05E7609B06A3EC93563CC8E6EFBBD7F5477E37743F43ECF1306C78B367B34258A'
   }
 
   return new Song({
@@ -51,7 +51,7 @@ export function createSong (musicData, key){
     album: musicData.albumname,
     duration: musicData.interval,
     image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData.albummid}.jpg?max_age=2592000`,
-    url: `http://dl.stream.qqmusic.qq.com/C400${musicData.songmid}.m4a?guid=2568118860&vkey=${key}&uin=0&fromtag=38`
+    url: `http://dl.stream.qqmusic.qq.com/C400${musicData.songmid}.m4a?guid=6044510397&vkey=${key}&uin=0&fromtag=38`
 
   })
 
